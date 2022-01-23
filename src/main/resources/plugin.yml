@@ -1,0 +1,10 @@
+name: TroubleInTorroristTown
+version: '${project.version}'
+main: sneezn.plugin.Plugin
+api-version: 1.18
+
+commands:
+  setup:
+    description: Sets multiple settings
+  start:
+    description: Starts the game
