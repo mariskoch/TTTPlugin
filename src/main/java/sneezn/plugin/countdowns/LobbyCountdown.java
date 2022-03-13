@@ -7,6 +7,11 @@ import sneezn.plugin.Plugin;
 import sneezn.plugin.gamestates.GameState;
 import sneezn.plugin.gamestates.GameStateManager;
 import sneezn.plugin.gamestates.LobbyState;
+import sneezn.plugin.voting.Map;
+import sneezn.plugin.voting.Voting;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class LobbyCountdown extends Countdown {
 
@@ -36,6 +41,21 @@ public class LobbyCountdown extends Countdown {
                                 .append(Component.text("The game starts in ", NamedTextColor.GRAY))
                                 .append(Component.text(seconds, NamedTextColor.GOLD))
                                 .append(Component.text(" seconds.", NamedTextColor.GRAY)));
+                        if(seconds == 3){
+                            Voting voting = gameStateManager.getPlugin().getVoting();
+                            Map winningMap;
+                            if(voting != null){
+                                winningMap = voting.getWinnerMap();
+                            } else {
+                                ArrayList<Map> maps = gameStateManager.getPlugin().getMaps();
+                                Collections.shuffle(maps);
+                                winningMap = maps.get(0);
+                            }
+                            Bukkit.getServer().sendMessage(Plugin.PREFIX
+                                    .append(Component.text("Tha map ", NamedTextColor.GREEN))
+                                    .append(Component.text(winningMap.getName(), NamedTextColor.GOLD))
+                                    .append(Component.text(" will be played", NamedTextColor.GREEN)));
+                        }
                         break;
                     case 1:
                         Bukkit.getServer().sendMessage(Plugin.PREFIX

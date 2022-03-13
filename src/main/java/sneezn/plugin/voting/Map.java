@@ -14,6 +14,8 @@ public class Map {
     private Location[] spawnLocations = new Location[LobbyState.MAX_PLAYERS];
     private Location spectatorLocation;
 
+    private int votes;
+
     public Map(Plugin plugin, String name) {
         this.plugin = plugin;
         this.name = name.toUpperCase();
@@ -65,4 +67,7 @@ public class Map {
         return spectatorLocation;
     }
 
+    public int getVotes() {
+        return votes;
+    }
 }

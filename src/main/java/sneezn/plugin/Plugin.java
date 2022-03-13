@@ -29,6 +29,7 @@ public final class Plugin extends JavaPlugin {
     private GameStateManager gameStateManager;
     private ArrayList<Player> players;
     private Voting voting;
+    private ArrayList<Map> maps;
 
     @Override
     public void onEnable() {
@@ -43,7 +44,7 @@ public final class Plugin extends JavaPlugin {
     }
 
     private void initVoting(){
-        ArrayList<Map> maps = new ArrayList<>();
+        maps = new ArrayList<>();
         for(String current : getConfig().getConfigurationSection("Arenas").getKeys(false)) {
             Map map = new Map(this, current);
             if (map.playable()) {
@@ -52,7 +53,17 @@ public final class Plugin extends JavaPlugin {
                 getLogger().warning("The map " + current + " is not fully set up");
             }
         }
-        voting = new Voting(this, maps);
+        if(maps.size() >= Voting.MAP_AMOUNT) {
+            voting = new Voting(this, maps);
+        } else {
+            getLogger().warning("There must be at least " + Voting.MAP_AMOUNT + " maps fully setup to initialize the voting.");
+            /*Bukkit.getConsoleSender().sendMessage(Component
+                    .text("There must be at least ", NamedTextColor.RED)
+                    .append(Component.text(Voting.MAP_AMOUNT, NamedTextColor.GOLD))
+                    .append(Component.text(" maps created to initialize the voting.", NamedTextColor.RED)));*/
+            voting = null;
+        }
+
     }
 
     @Override
@@ -79,5 +90,9 @@ public final class Plugin extends JavaPlugin {
 
     public Voting getVoting() {
         return voting;
+    }
+
+    public ArrayList<Map> getMaps() {
+        return maps;
     }
 }
